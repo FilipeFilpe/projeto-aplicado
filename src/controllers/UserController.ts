@@ -39,9 +39,11 @@ export default {
   },
   async update(request: Request, response: Response) {
     try {
-      let { id, nome, email, areaId } = request.body
+      const { id } = request.params
+      const { name, email, areaId } = request.body
+
       const area = await getRepository(Area).findOne(areaId)       
-      const user = await getRepository(User).save({ id, nome, email, area })
+      const user = await getRepository(User).save({ id: parseInt(id), name, email, area })
       return response.json(user)
     } catch (error) {
       console.error('Error ', error)
