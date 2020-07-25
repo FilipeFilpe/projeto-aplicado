@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Generated } from "typeorm";
-import { Area } from "./Area";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Generated, BeforeInsert } from "typeorm"
+import bcrypt from "bcrypt"
+import { Area } from "./Area"
 
 @Entity()
 export class User {
@@ -22,5 +23,14 @@ export class User {
 
   @ManyToOne(type => Area, area => area.users)
   area: Area
+
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+
+  async comparePassword(attempt: string): Promise<boolean> {
+    return await bcrypt.compare(attempt, this.password);
+  }
 
 }

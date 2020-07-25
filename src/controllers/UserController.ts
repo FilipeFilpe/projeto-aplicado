@@ -1,7 +1,6 @@
 import { getRepository } from "typeorm";
 import { Request, Response } from "express";
 import { User } from "../models/User";
-import { PasswordCrypto } from "../utils/crypto";
 import { Area } from "../models/Area";
 
 export default {
@@ -28,7 +27,7 @@ export default {
       if (password !== repeatPassword) {
         return response.json({mensagem: 'Senhas não são iguais'})
       }
-      request.body.password = new PasswordCrypto(password).criptografar()
+
       const area = await getRepository(Area).findOne(request.body.areaId) 
       const user = await getRepository(User).save({...request.body, area})
       return response.json(user)
