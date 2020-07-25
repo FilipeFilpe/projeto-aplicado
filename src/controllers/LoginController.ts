@@ -32,22 +32,20 @@ export default {
       return response.status(401).send('Access denied. No token provided.')
 
     try {
-      const [email, password] = Buffer.from(token, 'base64').toString().split(':')
 
       const payload: any = jwt.verify(token, config.get('myprivatekey'))
-      const user: User = await getRepository(User).findOne({ where: { userId: parseInt(payload.user) } })
+      const user: User = await getRepository(User).findOne({ where: { id: parseInt(payload.user) } })
 
       if (!user) {
-        return response.send(401)
+        return response.send(401).json({message: 'Invalid token'})
       }
 
       request.headers['user'] = user.id.toString()
 
-      response.status(200).send(user)
-
       return next()
-    } catch (ex) {
-      return response.status(401).send('Invalid token.')
+    } catch (error) {
+      console.log(error)
+      return response.status(401).json({message: 'Invalid token'})
     }
   }
 }
