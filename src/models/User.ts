@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Generated } from "typeorm";
 import { Area } from "./Area";
 
 @Entity()
@@ -7,7 +7,8 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @PrimaryGeneratedColumn('uuid')
+  @Column()
+  @Generated('uuid')
   uuid: string;
 
   @Column({nullable: false})

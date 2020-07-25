@@ -1,11 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, Generated } from "typeorm";
 import { User } from "./User";
 
 @Entity()
 export class Area {
 
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number; 
+  
+  @Column()
+  @Generated('uuid')
+  uuid: string;
 
   @Column()
   name: string;
