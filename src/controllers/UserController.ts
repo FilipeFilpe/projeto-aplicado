@@ -20,7 +20,6 @@ export default {
       return console.error('Error ', error)
     }
   },
-
   async create(request: Request, response: Response) {
     try {
       let { password, repeatPassword } = request.body

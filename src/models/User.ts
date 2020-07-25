@@ -32,5 +32,4 @@ export class User {
   async comparePassword(attempt: string): Promise<boolean> {
     return await bcrypt.compare(attempt, this.password);
   }
-
 }
