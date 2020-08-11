@@ -7,13 +7,14 @@ import { getRepository } from 'typeorm'
 export default {
   async login(request: Request, response: Response) {
     const [, hash] = request.headers.authorization?.split(' ') || [' ', ' ']
-    let [email, password] = Buffer.from(hash, 'base64')
+    const [email, password] = Buffer.from(hash, 'base64')
       .toString()
       .split(':')
-
+    
     try {      
       const user = await getRepository(User).findOne({ where: { email } })
-      const correctPassword = await user.comparePassword(password).then(result => result)
+      
+      const correctPassword = !user ? false : await user.comparePassword(password).then(result => result)
       
       if (!correctPassword) return response.status(401).send('Password or E-mail incorrect!')
 
