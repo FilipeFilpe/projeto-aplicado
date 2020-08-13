@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Generated, BeforeInsert } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Generated, BeforeInsert, OneToMany } from "typeorm"
 import bcrypt from "bcrypt"
 import { Area } from "./Area"
+import { UserToDemand } from "./UserToDemand";
 
 @Entity()
 export class User {
@@ -23,6 +24,9 @@ export class User {
 
   @ManyToOne(type => Area, area => area.users)
   area: Area
+
+  @OneToMany(type => UserToDemand, userToDemand => userToDemand.user)
+  userToDemand!: UserToDemand[];
 
   @BeforeInsert()
   async hashPassword() {

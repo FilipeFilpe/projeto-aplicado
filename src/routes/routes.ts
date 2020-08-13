@@ -1,23 +1,19 @@
-import {UserController} from "../controllers/UserController";
+import { Router } from 'express'
+// import loginRoutes from './routes/loginRoutes'
+import LoginController from '../controllers/LoginController'
+import userRoutes from './userRoutes'
+import demandRoutes from './demandRoutes'
+import areaRoutes from './areaRoutes'
+// import LoginController from './controllers/LoginController'
 
-export const Routes = [{
-    method: "get",
-    route: "/users",
-    controller: UserController,
-    action: "all"
-}, {
-    method: "get",
-    route: "/users/:id",
-    controller: UserController,
-    action: "one"
-}, {
-    method: "post",
-    route: "/users",
-    controller: UserController,
-    action: "save"
-}, {
-    method: "delete",
-    route: "/users/:id",
-    controller: UserController,
-    action: "remove"
-}];
+const routes = Router()
+
+routes.use('/login', LoginController.login)
+
+// rotas autenticadas
+routes.use('*', LoginController.auth)
+routes.use('/users', userRoutes)
+routes.use('/demands', demandRoutes)
+routes.use('/areas', areaRoutes)
+
+export default routes
