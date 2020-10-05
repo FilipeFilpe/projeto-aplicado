@@ -43,6 +43,8 @@ export default {
 
       request.headers['user'] = user.id.toString()
 
+      request['currentUser'] = user
+
       return next()
     } catch (error) {
       console.log(error)

@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn } from "typeorm";
 import { Paper } from "./Paper";
 import { User } from "./User";
 import { Demand } from "./Demand";
@@ -13,6 +13,12 @@ export class UserToDemand {
 
   @Column()
   demandId: number;
+
+  @Column()
+  action: string;
+
+  @Column()
+  createdAt: Date;
 
   @ManyToOne(type => Paper, paper => paper.userToDemand)
   paper: Paper;

@@ -3,6 +3,16 @@ import { Request, Response } from "express";
 import { User } from "../models/User";
 import { Area } from "../models/Area";
 
+export interface IRequestWithUser extends Request {
+  currentUser: {
+    id: null,
+    uuid: '',
+    name: '',
+    email: '',
+    password: ''
+  }
+}
+
 export default {
   async index(request: Request, response: Response) {
     try {
@@ -12,24 +22,31 @@ export default {
       return console.error('Error ', error)
     }
   },
-  async show(request: Request, response: Response) {
+  async show(request: IRequestWithUser, response: Response) {
     try {
       const user = await getRepository(User).findOne(request.params.id)
-      return response.json(user)
+      return response.json(request.currentUser)
     } catch (error) {
       return console.error('Error ', error)
     }
   },
   async create(request: Request, response: Response) {
     try {
-      let { password, repeatPassword } = request.body
+      let { name, email,  password, repeatPassword, areaId } = request.body
       if (password !== repeatPassword) {
         return response.json({mensagem: 'Senhas não são iguais'})
       }
+      
+      const area = await getRepository(Area).findOne(areaId)
 
-      const area = await getRepository(Area).findOne(request.body.areaId) 
-      const user = await getRepository(User).save({...request.body, area})
-      return response.json(user)
+      const user = new User()
+      user.name = name
+      user.email = email
+      user.password = password
+      user.area = area
+
+      const userResult = await getRepository(User).save(user)
+      return response.json(userResult)
     } catch (error) {
       console.error('Error ', error)
       return response.json({message: error.message})
@@ -38,11 +55,18 @@ export default {
   async update(request: Request, response: Response) {
     try {
       const { id } = request.params
-      const { name, email, areaId } = request.body
+      let { name, email, areaId } = request.body
 
-      const area = await getRepository(Area).findOne(areaId)       
-      const user = await getRepository(User).save({ id: parseInt(id), name, email, area })
-      return response.json(user)
+      const area = await getRepository(Area).findOne(areaId)
+
+      const user = new User()
+      user.id = parseInt(id)
+      user.name = name
+      user.email = email
+      user.area = area
+
+      const userResult = await getRepository(User).save(user)
+      return response.json(userResult)
     } catch (error) {
       console.error('Error ', error)
       return response.status(500).json({message: error.message})

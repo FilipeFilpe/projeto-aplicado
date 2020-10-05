@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, Generated, OneToMany, ManyToOne } from "typeorm"
 import { Status } from "./Status";
 import { UserToDemand } from "./UserToDemand";
+import { Anexo } from "./Anexo";
 
 @Entity()
 export class Demand {
@@ -25,5 +26,8 @@ export class Demand {
   status: Status
 
   @OneToMany(type => UserToDemand, userToDemand => userToDemand.demand)
-  userToDemand!: UserToDemand[];
+  userToDemand!: UserToDemand[]
+  
+  @OneToMany(type => Anexo, anexo => anexo.demand)
+  anexos!: Anexo[]
 }

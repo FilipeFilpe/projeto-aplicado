@@ -12,12 +12,16 @@ import { initialValues } from '../initialValues'
 import { Status } from "./models/Status";
 import { Paper } from "./models/Paper";
 
+export const HOST = 'localhost'
+export const PORT = 3333
+
 createConnection().then(async connection => {
 
   // create express app
   const app = Express()
   app.use(cors())
   app.use(bodyParser.json())
+  app.use(Express.static('tmp'))
 
   app.use(routes)
 
@@ -37,8 +41,8 @@ createConnection().then(async connection => {
     })
     initialValues.paper.map( async (pp: any) => {
       const paper = new Paper()
-      paper.name = paper.name
-      paper.description = paper.description
+      paper.name = pp.name
+      paper.description = pp.description
 
       await getRepository(Paper).save(paper)
     })
@@ -47,6 +51,6 @@ createConnection().then(async connection => {
   }
 
   // start express server
-  app.listen(3334)
+  app.listen(PORT,HOST)
 
 }).catch(error => console.log(error));
