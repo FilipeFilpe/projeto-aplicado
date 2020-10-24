@@ -1,0 +1,10 @@
+{
+  "myprivatekey": "iIsInR5cCI6IkpXVCJ9eyJhbGciOiJIUzI1N",
+  "type": "hex",
+  "algorithm": "aes-256-ctr",
+  "adminUser": {
+    "name": "admin",
+    "email": "admin@email.com",
+    "password": "12345678"
+  }
+ }
