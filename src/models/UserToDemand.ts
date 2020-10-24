@@ -1,5 +1,4 @@
-import { Entity, Column, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn } from "typeorm";
-import { Paper } from "./Paper";
+import { Entity, Column, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import { User } from "./User";
 import { Demand } from "./Demand";
 
@@ -19,9 +18,6 @@ export class UserToDemand {
 
   @Column()
   createdAt: Date;
-
-  @ManyToOne(type => Paper, paper => paper.userToDemand)
-  paper: Paper;
 
   @ManyToOne(type => User, user => user.userToDemand)
   user: User;

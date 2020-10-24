@@ -35,7 +35,7 @@ export default {
     try {
 
       const payload: any = jwt.verify(token, config.get('myprivatekey'))
-      const user: User = await getRepository(User).findOne({ where: { id: parseInt(payload.user) } })
+      const user: User = await getRepository(User).findOne(parseInt(payload.user), { relations: ["area", "role"] })
 
       if (!user) {
         return response.send(401).json({message: 'Invalid token'})
