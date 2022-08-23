@@ -5,6 +5,8 @@
   "adminUser": {
     "name": "admin",
     "email": "admin@email.com",
-    "password": "12345678"
+    "password": "12345678",
+    "role": 1,
+    "area": 1
   }
  }

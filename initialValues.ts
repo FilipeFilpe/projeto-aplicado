@@ -17,14 +17,32 @@ export const initialValues = {
       description: "Demandas encerradas."
     }
   ],
-  paper: [
+  areas: [
     {
-      name: "Dono",
-      description: "Quem criou a demanda."
+      name: "Supervisão",
+      description: ""
     },
     {
       name: "Desenvolvimento",
-      description: "Quem tá fazendo a demanda."
+      description: ""
+    },
+    {
+      name: "Recursos Humanos",
+      description: ""
+    }
+  ],
+  roles: [
+    {
+      name: "Admin",
+      description: "Responsável por gerir o sistema, mantendo os status, usuários, papeis, etc."
+    },
+    {
+      name: "Developer",
+      description: "Responsável por fazer as demandas."
+    },
+    {
+      name: "Area",
+      description: "Responsável por criar as demandas."
     }
   ]
 }

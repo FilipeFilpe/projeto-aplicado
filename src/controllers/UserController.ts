@@ -2,6 +2,7 @@ import { getRepository } from "typeorm";
 import { Request, Response } from "express";
 import { User } from "../models/User";
 import { Area } from "../models/Area";
+import { Role } from "../models/Role";
 
 export interface IRequestWithUser extends Request {
   currentUser: {
@@ -16,7 +17,7 @@ export interface IRequestWithUser extends Request {
 export default {
   async index(request: Request, response: Response) {
     try {
-      const user = await getRepository(User).find();
+      const user = await getRepository(User).find({ relations: ["area", "role"] });
       return response.json(user)
     } catch (error) {
       return console.error('Error ', error)
@@ -24,7 +25,11 @@ export default {
   },
   async show(request: IRequestWithUser, response: Response) {
     try {
-      const user = await getRepository(User).findOne(request.params.id)
+      const { id } = request.params
+      if (id && id !== 'currentUser') {
+        const user = await getRepository(User).findOne(request.params.id, { relations: ["area", "role"] })
+        return response.json(user)
+      }
       return response.json(request.currentUser)
     } catch (error) {
       return console.error('Error ', error)
@@ -32,18 +37,20 @@ export default {
   },
   async create(request: Request, response: Response) {
     try {
-      let { name, email,  password, repeatPassword, areaId } = request.body
+      let { name, email,  password, repeatPassword, areaId, roleId } = request.body
       if (password !== repeatPassword) {
         return response.json({mensagem: 'Senhas não são iguais'})
       }
       
       const area = await getRepository(Area).findOne(areaId)
+      const role = await getRepository(Role).findOne(roleId)
 
       const user = new User()
       user.name = name
       user.email = email
       user.password = password
       user.area = area
+      user.role = role
 
       const userResult = await getRepository(User).save(user)
       return response.json(userResult)
@@ -55,15 +62,17 @@ export default {
   async update(request: Request, response: Response) {
     try {
       const { id } = request.params
-      let { name, email, areaId } = request.body
+      let { name, email, areaId, roleId } = request.body
 
       const area = await getRepository(Area).findOne(areaId)
+      const role = await getRepository(Role).findOne(roleId)
 
       const user = new User()
       user.id = parseInt(id)
       user.name = name
       user.email = email
       user.area = area
+      user.role = role
 
       const userResult = await getRepository(User).save(user)
       return response.json(userResult)

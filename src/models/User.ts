@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Generated, BeforeIns
 import bcrypt from "bcrypt"
 import { Area } from "./Area"
 import { UserToDemand } from "./UserToDemand";
+import { Role } from "./Role";
 
 @Entity()
 export class User {
@@ -24,6 +25,9 @@ export class User {
 
   @ManyToOne(type => Area, area => area.users)
   area: Area
+
+  @ManyToOne(type => Role, role => role.users)
+  role: Role
 
   @OneToMany(type => UserToDemand, userToDemand => userToDemand.user)
   userToDemand!: UserToDemand[];

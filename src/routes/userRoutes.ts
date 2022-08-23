@@ -6,6 +6,7 @@ const userRoutes = Router()
 userRoutes.get('/', UserController.index)
 userRoutes.post('/', UserController.create)
 userRoutes.put('/:id', UserController.update)
+userRoutes.get('/:id', UserController.show)
 userRoutes.get('/currentUser', UserController.show)
 userRoutes.delete('/:id', UserController.delete)
 
